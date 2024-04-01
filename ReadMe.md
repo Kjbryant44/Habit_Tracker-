@@ -1,13 +1,14 @@
-# Habit Tracker CLI
+# Habit Tracker App
 
-Welcome to the Habit Tracker CLI. The Habit Tracker CLI is a command-line interface application that helps you keep track of your daily and weekly habits. The application allows you to add habits, delete habits, mark habits as completed, and analyze your habit tracking data. 
+Welcome to the Habit Tracker App. The Habit Tracker helps you keep track of your daily and weekly habits. You will be able to get rid of bad habits or establish new habits. 
+The application allows you to add habits, delete habits, mark habits as completed, and analyze your habit tracking data. 
 
 ## Getting Started
 
 To run the application:
 
-1. Clone the repository to your local machine.
-2. Navigate to the directory where you clo after cloning.
+1. Download the code from GitHub to your computer, by clicking on the Code button and downloading the ZIP and unzip it.
+2. In your terminal navigate to the directory where you cloned the repository as following, command is cd User/Name/location/Habit_Tracker-. ()replace the Name with your username, the location with wherever you stored the unzipped file.
 3. If not installed, install Python 3.
 4. Run `python main.py` to start the application.
 
@@ -44,12 +45,9 @@ With this you will be able to:
 
 To end the app select 6.
 
-## Technologies & Packages
+## Technologies
 
-- Python 3.
-- Pytest
-- DateTime
-- List
+- Python 3.12
 
 ## Files
 
