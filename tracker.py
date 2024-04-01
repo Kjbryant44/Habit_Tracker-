@@ -8,10 +8,6 @@ class Tracker:
     def __init__(self):
         self.habits = []
 
-    def new_habit(self, habit):
-        self.habits.append(habit)
-        print(f"New habit '{habit.name}' added to the tracker.")
-
     def complete_habit(self, habit_name):
         for habit in self.habits:
             if habit.name == habit_name:
@@ -36,25 +32,29 @@ class Tracker:
                 return
         print(f"No habit found with the name '{habit_name}'.")
 
-    def get_habits(self) -> List[Habit]:
-        """Get all habits associated with the user."""
-        return self.habits
+    def get_habits(self, user_id=None) -> List[Habit]:
+        """Get all habits associated with the user or all habits if no user specified."""
+        if user_id is None:
+            return self.habits
+        else:
+            return [habit for habit in self.habits if habit.user_id == user_id]
 
-    def get_habits_by_periodicity(self, periodicity: str):
-        """Return a list of all habits with the same periodicity."""
-        return [habit for habit in self.habits if habit.periodicity == periodicity]
+    def get_habits_by_periodicity(self, periodicity: str, user_id: int = None):
+        """Return a list of all habits with the same periodicity for a specific user or all users."""
+        if user_id is None:
+            return [habit for habit in self.habits if habit.periodicity == periodicity]
+        else:
+            return [habit for habit in self.habits if habit.periodicity == periodicity and habit.user_id == user_id]
 
     def get_longest_run_streak_all(self):
         """Return the longest run streak of all defined habits."""
-        longest_streak = max([habit.calculate_streak() for habit in self.habits])
+        longest_streak = max([habit.calculate_streak() for habit in self.habits], default=0)
         return longest_streak
 
-    def get_longest_run_streak_for_habit(self, habit_name: str):
-        """Return the longest run streak for a given habit."""
-        for habit in self.habits:
-            if habit.name == habit_name:
-                return habit.calculate_streak()
-        return 0
+    def get_habit_with_longest_streak(self):
+        if not self.habits:
+            return None
+        return max(self.habits, key=lambda habit: habit.calculate_streak())
 
     def save_to_json(self, filename: str):
         """Save the tracker's habits to a JSON file."""
