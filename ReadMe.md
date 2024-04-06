@@ -61,7 +61,7 @@ To end the app select 6.
 - `test_user.py`: This script tests the functionality of the `TestUser` class.
 - `test_habit.py`: This script tests the functionality of the `TestHabit`
 - `test_tracker.py`: This script tests the functionality of the `TestTracker` class.
-
+- `predefined_habits.json`: This script hold the predefined habits of 28 days.
 
 
 
