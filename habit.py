@@ -129,12 +129,16 @@ class Habit:
     def from_json(cls, json_string: str) -> 'Habit':
         """Create a Habit object from a JSON string."""
         data = json.loads(json_string)
+        try:
+            date_started = date.fromisoformat(data['date_started'])
+        except KeyError:
+            date_started = date.today()
         habit = cls(name=data['name'],
-                    date_started=date.fromisoformat(data['date_started']),
+                    date_started=date_started,
                     description=data['description'],
                     periodicity=data['periodicity'],
                     frequency=data['frequency'])
         habit.completed_habit = [date.fromisoformat(completed_date_str) for completed_date_str in
-                                 data['completed_habit']]
-        habit.user_id = data['user_id']
+                                 data.get('completed_habit', [])]
+        habit.user_id = data.get('user_id')
         return habit

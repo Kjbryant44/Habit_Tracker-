@@ -2,6 +2,7 @@ from datetime import datetime
 from user import User
 from habit import Habit
 from tracker import Tracker
+import json
 
 
 def create_habit(user_id):
@@ -22,23 +23,26 @@ def create_habit(user_id):
     return new_habit
 
 
+def load_predefined_habits(tracker, user):
+    try:
+        with open('predefined_habits.json', 'r') as file:
+            habit_data = json.load(file)
+            habits = [Habit.from_json(json.dumps(data)) for data in habit_data]
+            tracker.habits.extend(habits)
+            user.habits.extend(habits)
+    except FileNotFoundError:
+        print('File "predefined_habits.json" not found.')
+    except json.JSONDecodeError:
+        print('Error in decoding the JSON data from the file.')
+
+
 def main():
     user = User(input('Enter your User name: '))
     print('Welcome to the Habit Tracker, {}!'.format(user.user_name))
     tracker = Tracker()
 
     # predefined habits
-    predefined_habits = [
-        Habit("Basketball", datetime.now().date(), "Practice", "Weekly", 6),
-        Habit("Reading", datetime.now().date(), "Read a chapter", "Daily", 2),
-        Habit("Meditation", datetime.now().date(), "Meditate for 10 minutes", "Daily", 1),
-        Habit("Clean Up", datetime.now().date(), "Weekly clean up", "Weekly", 3),
-        Habit("Cooking", datetime.now().date(), "Cook a new recipe", "daily", 1),
-    ]
-    for habit in predefined_habits:
-        habit.add_user_id(user.user_id)
-        user.add_habit(habit)
-        tracker.habits.append(habit)
+    load_predefined_habits(tracker, user)
 
     while True:
         try:
@@ -61,15 +65,18 @@ def main():
                 habit = create_habit(user.user_id)
                 user.add_habit(habit)
                 tracker.habits.append(habit)
+                tracker.save_to_json('tracker_state.json')
 
             elif choice == 3:
                 habit_name = input('Enter the name of the habit to delete: ')
                 user.delete_habit(habit_name)
                 tracker.habits = [habit for habit in tracker.habits if habit.name != habit_name]
+                tracker.save_to_json('tracker_state.json')
 
             elif choice == 4:
                 habit_name = input('Enter the name of the habit to complete: ')
                 tracker.complete_habit(habit_name)
+                tracker.save_to_json('tracker_state.json')
 
             elif choice == 5:
                 print('\nSub Menu to analyze habits:')
@@ -104,6 +111,7 @@ def main():
 
             elif choice == 6:
                 print('Goodbye, {}!'.format(user.user_name))
+                tracker.save_to_json('tracker_state.json')
                 break
 
         except ValueError:

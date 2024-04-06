@@ -48,6 +48,9 @@ To end the app select 6.
 ## Technologies
 
 - Python 3.12
+- json
+- datetime
+- typing
 
 ## Files
 
